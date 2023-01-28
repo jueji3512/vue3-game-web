@@ -1,0 +1,10 @@
+body {
+  background-color: #efefef;
+  a {
+    text-decoration: none;
+    color: blue;
+    &:hover {
+      color: #0052d9;
+    }
+  }
+}
