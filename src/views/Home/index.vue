@@ -1,36 +1,27 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue'
-import type { Page, GameList } from '@/types/home'
-import { getGameList } from '@/services/index'
+import { getUpdateGameList } from '@/services/index'
+import type { SearchResultList } from '@/types/search'
 
 const router = useRouter()
 const emits = defineEmits(['changeMenu'])
-const loading = ref(false)
-const pageSize = ref(12)
-const currentPage = ref(1)
-const list = ref<GameList>()
-const page: Page = {
-  currentPage: 1,
-  pageSize: 12
-}
 
-const clickto = (id: string) => {
+const updateGameList = ref<SearchResultList>()
+const loading = ref(false)
+
+const clickto = (id: number) => {
   router.push({ name: 'game', params: { id } })
 }
-const getGameInfoList = async () => {
+const getHomeList = async () => {
   loading.value = true
-  const res = await getGameList(page)
-  list.value = res.data
+  const res = await getUpdateGameList()
+  updateGameList.value = res.data
   loading.value = false
-}
-const pageChange = () => {
-  page.currentPage = currentPage.value
-  getGameInfoList()
 }
 onMounted(() => {
   emits('changeMenu', 'item1')
-  getGameInfoList()
+  getHomeList()
 })
 </script>
 
@@ -57,8 +48,8 @@ onMounted(() => {
         </t-swiper-item>
       </t-swiper>
     </div>
-    <div class="home-content">
-      <template v-for="item in list?.rows" :key="item.id">
+    <div class="update-list">
+      <template v-for="item in updateGameList" :key="item.id">
         <t-card
           class="home-card"
           :cover="item.game_t_img"
@@ -74,35 +65,10 @@ onMounted(() => {
       </template>
     </div>
   </div>
-  <t-pagination
-    v-model="currentPage"
-    v-model:pageSize="pageSize"
-    :total="list?.total"
-    @current-change="pageChange"
-    :pageSizeOptions="[]"
-    show-jumper
-  />
 </template>
 
 <style lang="scss" scoped>
-:deep {
-  .t-card {
-    position: relative;
-    height: 242.725px;
-    overflow: hidden;
-  }
-  .t-card__cover {
-    overflow: hidden;
-  }
-  .t-card__footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 334.4px;
-    background-color: #fff;
-    border-radius: 0 0 6px 6px;
-  }
-}
+@import '@/styles/common.scss';
 .home-swiper {
   margin-bottom: 50px;
 }
@@ -120,15 +86,10 @@ onMounted(() => {
 .img3 {
   background-image: url('https://media.st.dl.eccdnx.com/steam/apps/1817190/ss_02bb2ac97c3ce854344a537d9ed89c70ba45c3d3.1920x1080.jpg?t=1668787110');
 }
-.home-content {
+.update-list {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-}
-.home-card {
-  cursor: pointer;
-}
-.t-card:last-child:nth-child(3n-1) {
-  margin-right: 34%;
+  margin-top: 80px;
 }
 </style>

@@ -28,18 +28,13 @@ const changeMenu = (value: string) => {
           v-model="menuValue"
         >
           <template #logo>
-            <h1 style="margin-left: 30px">何安阳Game</h1>
+            <h1 style="margin-left: 30px">HLGame</h1>
           </template>
           <t-menu-item value="item1" to="/home"> 首页 </t-menu-item>
-          <t-menu-item value="item2" to="/search"> 搜索 </t-menu-item>
-          <template #operations>
-            <router-link to="/search"
-              ><t-icon class="t-menu__operations-icon" name="search"
-            /></router-link>
-            <router-link to="/home"
-              ><t-icon class="t-menu__operations-icon" name="home"
-            /></router-link>
-          </template>
+          <t-menu-item value="item2" to="/library"> 游戏库 </t-menu-item>
+          <t-menu-item value="item3" to="/search"
+            ><t-icon class="icon" name="search"
+          /></t-menu-item>
         </t-head-menu>
       </t-header>
     </t-layout>
@@ -53,9 +48,18 @@ const changeMenu = (value: string) => {
 </template>
 
 <style lang="scss" scoped>
+:deep {
+  svg {
+    vertical-align: text-top;
+  }
+}
 .wrapper {
   width: 1200px;
   margin: 30px auto;
+}
+
+.icon {
+  font-size: 20px;
 }
 .affix {
   position: fixed;

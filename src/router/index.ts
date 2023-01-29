@@ -1,7 +1,8 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  // history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -14,9 +15,9 @@ const router = createRouter({
           meta: { title: '首页' }
         },
         {
-          path: '/recommend',
-          component: () => import('@/views/Recommend/index.vue'),
-          meta: { title: '推荐' }
+          path: '/library',
+          component: () => import('@/views/Library/index.vue'),
+          meta: { title: '游戏库' }
         },
         {
           path: '/game/:id',
@@ -30,6 +31,14 @@ const router = createRouter({
           meta: { title: '搜索' }
         }
       ]
+    },
+    {
+      path: '/404',
+      component: () => import('@/views/404/index.vue')
+    },
+    {
+      path: '/:catchAll(.*)',
+      redirect: '/404'
     }
   ]
 })

@@ -5,10 +5,8 @@ type Data<T> = {
   message: string
   data: T
 }
-const baseURL = '/api'
-
 const instance = axios.create({
-  baseURL,
+  baseURL: import.meta.env.VUE_APP_BASE_API,
   timeout: 10000
 })
 
@@ -28,4 +26,4 @@ instance.interceptors.response.use((res) => {
   return res
 })
 
-export { baseURL, instance, request }
+export { instance, request }
