@@ -5,6 +5,9 @@ import type { GameDetailType } from '@/types/game'
 import { onMounted, ref, computed } from 'vue'
 
 const route = useRoute()
+
+const emits = defineEmits(['changeMenu'])
+
 // 数据
 const gameDetail = ref<GameDetailType>({
   // 游戏名
@@ -42,7 +45,6 @@ const gameDescription = computed(() =>
 const getGameDetailInfo = async () => {
   const res = await getGameDetail(gameId)
   gameDetail.value = res.data
-  console.log(gameDetail.value.game_title)
 }
 // 转到夸克/百度网盘
 const toQuark = () => {
@@ -53,6 +55,7 @@ const toBaidu = () => {
 }
 // 钩子函数
 onMounted(() => {
+  emits('changeMenu', '')
   getGameDetailInfo()
 })
 </script>
@@ -83,7 +86,7 @@ onMounted(() => {
       <div class="left-video" v-else>
         <div class="no-video">
           <t-tag theme="primary" variant="light-outline" size="large"
-            >无视频资源</t-tag
+            >sorry~没有视频资源</t-tag
           >
         </div>
       </div>
@@ -119,7 +122,6 @@ onMounted(() => {
           v-html="gameDescription || '无'"
         ></span>
       </p>
-
       <p class="update-date">
         更新时间：
         {{ gameDetail.date }}

@@ -1,23 +1,19 @@
 <script lang="ts" setup>
-import { ref, onMounted, onUpdated } from 'vue'
-import { useRoute } from 'vue-router'
-const menuValue = ref('item1')
+import { ref, onMounted } from 'vue'
+const menuValue = ref('')
 const overDistance = ref(false)
 const returnTop = () => {
   window.scrollTo(0, 0)
 }
-const route = useRoute()
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
-})
-onUpdated(() => {
-  if (route.path !== '/home') {
-    menuValue.value = ''
-  }
 })
 const handleScroll = () => {
   const winHeight = document.documentElement.scrollTop
   overDistance.value = winHeight >= 400 ? true : false
+}
+const changeMenu = (value: string) => {
+  menuValue.value = value
 }
 </script>
 
@@ -35,28 +31,20 @@ const handleScroll = () => {
             <h1 style="margin-left: 30px">何安阳Game</h1>
           </template>
           <t-menu-item value="item1" to="/home"> 首页 </t-menu-item>
-          <!-- <t-menu-item value="item2" to="/recommend"> 推荐 </t-menu-item>
-          <t-menu-item value="item3"> 动作冒险 </t-menu-item>
-          <t-menu-item value="item4"> 动作冒险 </t-menu-item>
-          <t-menu-item value="item5"> 动作冒险 </t-menu-item> -->
+          <t-menu-item value="item2" to="/search"> 搜索 </t-menu-item>
           <template #operations>
-            <a href="/search"
+            <router-link to="/search"
               ><t-icon class="t-menu__operations-icon" name="search"
-            /></a>
-            <!-- <a href="javascript:;"
-              ><t-icon
-                class="t-menu__operations-icon"
-                name="notification-filled"
-            /></a> -->
-            <a href="/home"
+            /></router-link>
+            <router-link to="/home"
               ><t-icon class="t-menu__operations-icon" name="home"
-            /></a>
+            /></router-link>
           </template>
         </t-head-menu>
       </t-header>
     </t-layout>
     <div class="wrapper">
-      <RouterView></RouterView>
+      <RouterView @changeMenu="changeMenu"></RouterView>
     </div>
     <div v-show="overDistance" class="affix" @click="returnTop">
       <t-icon name="chevron-up"></t-icon>返回顶部
